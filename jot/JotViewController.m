@@ -10,7 +10,7 @@
 #import "JotDrawView.h"
 #import "JotTextView.h"
 #import "JotTextEditView.h"
-#import <Masonry/Masonry.h>
+#import "Masonry.h"
 #import "UIImage+Jot.h"
 #import "JotDrawingContainer.h"
 
@@ -24,6 +24,7 @@
 @property (nonatomic, strong) JotDrawView *drawView;
 @property (nonatomic, strong) JotTextEditView *textEditView;
 @property (nonatomic, strong) JotTextView *textView;
+@property (nonatomic, strong) NSMutableDictionary *eraseProperties;
 
 @end
 
@@ -38,6 +39,7 @@
         _textEditView.delegate = self;
         _textView = [JotTextView new];
         _drawingContainer = [JotDrawingContainer new];
+        _eraseProperties = [NSMutableDictionary dictionary];
         self.drawingContainer.delegate = self;
         
         _font = self.textView.font;
@@ -262,6 +264,23 @@
     [self.textView clearText];
 }
 
+- (void)startErasingDrawing {
+    self.eraseProperties[@"color"] = self.drawingColor;
+    self.eraseProperties[@"strokeWidth"] = @(self.drawingStrokeWidth);
+    self.eraseProperties[@"constantStrokeWidth"] = @(self.drawingConstantStrokeWidth);
+    [self setDrawingColor:[UIColor clearColor]];
+    [self setDrawingStrokeWidth:30.f];
+    [self setDrawingConstantStrokeWidth:YES];
+}
+
+- (void)endErasingDrawing {
+    [self setDrawingColor:self.eraseProperties[@"color"]];
+    [self setDrawingStrokeWidth:[self.eraseProperties[@"strokeWidth"] floatValue]];
+    [self setDrawingConstantStrokeWidth: [self.eraseProperties[@"constantStrokeWidth"] boolValue]];
+    [self.eraseProperties removeAllObjects];
+}
+
+
 #pragma mark - Output UIImage
 
 - (UIImage *)drawOnImage:(UIImage *)image
@@ -383,3 +402,4 @@
 }
 
 @end
+
