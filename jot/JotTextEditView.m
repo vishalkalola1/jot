@@ -7,7 +7,7 @@
 //
 
 #import "JotTextEditView.h"
-#import <Masonry/Masonry.h>
+#import "Masonry.h"
 
 @interface JotTextEditView () <UITextViewDelegate>
 
