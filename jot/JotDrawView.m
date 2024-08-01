@@ -92,6 +92,17 @@ CGFloat const kJotRelativeMinStrokeWidth = 0.4f;
 
 #pragma mark - Draw Touches
 
+- (void)drawTouchDotAtPoint:(CGPoint)touchPoint
+{
+    self.lastVelocity = self.initialVelocity;
+    self.lastWidth = self.strokeWidth;
+    self.pointsCounter = 0;
+    [self.pointsArray removeAllObjects];
+    [self.pointsArray addObject:[JotTouchPoint withPoint:touchPoint]];
+    [self drawTouchEnded];
+    
+}
+
 - (void)drawTouchBeganAtPoint:(CGPoint)touchPoint
 {
     self.lastVelocity = self.initialVelocity;
@@ -106,7 +117,7 @@ CGFloat const kJotRelativeMinStrokeWidth = 0.4f;
     self.pointsCounter += 1;
     [self.pointsArray addObject:[JotTouchPoint withPoint:touchPoint]];
     
-    if (self.pointsCounter == 4) {
+    if (self.pointsCounter == 4 && self.pointsArray.count == 5) {
         
         self.pointsArray[3] = [JotTouchPoint withPoint:CGPointMake(([self.pointsArray[2] CGPointValue].x + [self.pointsArray[4] CGPointValue].x)/2.f,
                                                                    ([self.pointsArray[2] CGPointValue].y + [self.pointsArray[4] CGPointValue].y)/2.f)];
