@@ -51,6 +51,17 @@
 - (void)clearDrawing;
 
 /**
+ *  Tells the JotDrawView to handle a Tap event.
+ *
+ *  @param touchPoint The point in this view's coordinate
+ *  system where the touch began.
+ *
+ *  @note This method is triggered by the JotDrawController's
+ *  touchesBegan event.
+ */
+- (void)drawTouchDotAtPoint:(CGPoint)touchPoint;
+
+/**
  *  Tells the JotDrawView to handle a touchesBegan event.
  *
  *  @param touchPoint The point in this view's coordinate
